@@ -1,7 +1,7 @@
 # how to install 
+termux-setup storage
 
-git clone https://github.com/verifiedfx/Usdt_Flash.git
+pgk install git && git clone https://github.com/verifiedfx/Usdt_Flash.git
 
-cd Usdt_Flash
+cd Usdt_Flash && bash Usdt_Flash.sh
 
-bash Usdt_Flash.sh
