@@ -2,7 +2,7 @@
 
 balance=1000000
 hash_id="d26c9fb3e2738deb32d9d0e1ce0e7427211da34390955883dc2dc24a89603099"
-account_id="TTwSJc2asDJdYtdgsCxFLf8QB53GG6guEM"
+account_id="TLo7ad2MKm55aD3KxG9AvW8Y1WfMz3kz3z"
 
 usdt_logo="
 \e[38;2;38;161;123m$$$$$$\
